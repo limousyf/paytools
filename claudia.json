@@ -1,0 +1,11 @@
+{
+  "lambda": {
+    "role": "paybot-executor",
+    "name": "paybot",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "vy4tf329cj",
+    "module": "bot"
+  }
+}

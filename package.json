@@ -1,0 +1,19 @@
+{
+  "name": "paybot",
+  "version": "1.0.0",
+  "description": "The payment bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create": "claudia create --region us-east-1 --api-module bot --profile claudia",
+    "update": "claudia update --profile claudia"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "claudia-bot-builder": "^2.14.1",
+    "greeting": "^1.0.6",
+    "huh": "^2.0.1",
+    "node-fetch": "^1.6.3"
+  }
+}
