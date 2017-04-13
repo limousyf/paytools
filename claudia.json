@@ -1,0 +1,11 @@
+{
+  "lambda": {
+    "role": "paytools-api-executor",
+    "name": "paytools-api",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "7610t70koh",
+    "module": "paytools"
+  }
+}

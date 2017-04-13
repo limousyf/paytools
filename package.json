@@ -1,0 +1,14 @@
+{
+  "name": "paytools-api",
+  "version": "1.0.0",
+  "description": "A set of simple helper functions for payment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Francis Limousy (limousyf@gmail.com)",
+  "license": "ISC",
+  "dependencies": {
+    "claudia-api-builder": "^2.4.1"
+  }
+}
