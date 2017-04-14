@@ -144,18 +144,54 @@ function cvrResultsAt(byte, position, value, format2){
     ]
 
     var cvrResultsB2LeftNibble = {
-        '0' : "AAC returned in second GENERATE AC\nAAC returned in first GENERATE AC",
-        '1' : "AAC returned in second GENERATE AC\nTC returned in second GENERATE AC",
-        '2' : "AAC returned in second GENERATE AC\nARQC returned in second GENERATE AC",
-        '3' : "AAC returned in second GENERATE AC\nRFU",
-        '4' : "TC returned in second GENERATE AC\nAAC returned in second GENERATE AC",
-        '5' : "TC returned in second GENERATE AC\nTC returned in second GENERATE AC",
-        '6' : "TC returned in second GENERATE AC\nARQC returned in second GENERATE AC",
-        '7' : "TC returned in second GENERATE AC\nRFU",
-        'C' : "Second GENERATE AC not requested\nAAC returned in second GENERATE AC",
-        'D' : "Second GENERATE AC not requested\nTC returned in second GENERATE AC",
-        'E' : "Second GENERATE AC not requested\nARQC returned in second GENERATE AC",
-        'F' : "Second GENERATE AC not requested\nRFU",
+        '0' : {
+            'firstCryptogram' : "AAC returned in second GENERATE AC",
+            'secondCryptogram' : "AAC returned in first GENERATE AC"
+        },
+        '1' : {
+            'firstCryptogram' : "AAC returned in second GENERATE AC",
+            'secondCryptogram' : "TC returned in first GENERATE AC"
+        },
+        '2' : {
+            'firstCryptogram' : "AAC returned in second GENERATE AC",
+            'secondCryptogram' : "ARQC returned in first GENERATE AC"
+        },
+        '3' : {
+            'firstCryptogram' : "AAC returned in second GENERATE AC",
+            'secondCryptogram' : "RFU"
+        },
+        '4' : {
+            'firstCryptogram' : "TC returned in second GENERATE AC",
+            'secondCryptogram' : "AAC returned in first GENERATE AC"
+        },
+        '5' : {
+            'firstCryptogram' : "TC returned in second GENERATE AC",
+            'secondCryptogram' : "TC returned in first GENERATE AC"
+        },
+        '6' : {
+            'firstCryptogram' : "TC returned in second GENERATE AC",
+            'secondCryptogram' : "ARQC returned in first GENERATE AC"
+        },
+        '7' : {
+            'firstCryptogram' : "TC returned in second GENERATE AC",
+            'secondCryptogram' : "RFU"
+        },
+        'C' : {
+            'firstCryptogram' : "Second GENERATE AC not requested",
+            'secondCryptogram' : "AAC returned in first GENERATE AC"
+        },
+        'D' : {
+            'firstCryptogram' : "Second GENERATE AC not requested",
+            'secondCryptogram' : "TC returned in first GENERATE AC"
+        },
+        'E' : {
+            'firstCryptogram' : "Second GENERATE AC not requested",
+            'secondCryptogram' : "ARQC returned in first GENERATE AC"
+        },
+        'F' : {
+            'firstCryptogram' : "Second GENERATE AC not requested",
+            'secondCryptogram' : "RFU"
+        }
     }
 
     //different processing from the other values as not a bit field
