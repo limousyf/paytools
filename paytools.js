@@ -16,6 +16,7 @@ var aipUtils = require('./aip');
 var aucUtils = require('./auc');
 var tvrUtils = require('./tvr');
 var tsiUtils = require('./tsi');
+var avsUtils = require('./avs');
 
 var ApiBuilder = require('claudia-api-builder'),
 	api = new ApiBuilder();
@@ -122,6 +123,27 @@ api.get('/auc', function (request) {
 		else{
 			throw("Internal error")
 		}     
+    }
+	else{
+		throw(formatResult.errorMessage)
+	}
+});
+
+api.get('/avs', function (request) {
+    var avs = request.queryString.avs
+	var scheme = request.queryString.scheme
+
+	var message = "X"
+    var formatResult = utils.formatChecker(avs,0,.5,.5,message)
+
+    if(formatResult.formatOk){
+        var interpretedAVS= avsUtils.decodeAVS(avs, scheme)
+        if(interpretedAVS != ""){
+			return new api.ApiResponse(interpretedAVS, {'Content-Type': 'application/json'}, 200);
+        }
+		else{
+			throw("Internal error")
+		}          
     }
 	else{
 		throw(formatResult.errorMessage)
