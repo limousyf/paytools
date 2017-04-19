@@ -17,6 +17,7 @@ var aucUtils = require('./auc');
 var tvrUtils = require('./tvr');
 var tsiUtils = require('./tsi');
 var avsUtils = require('./avs');
+var iinUtils = require('./iin');
 
 var ApiBuilder = require('claudia-api-builder'),
 	api = new ApiBuilder();
@@ -150,6 +151,10 @@ api.get('/avs', function (request) {
 	}
 });
 
+api.get('/bin', function (request) {
+	return processIIN(request)
+});
+
 api.get('/cid', function (request) {
     var cid = request.queryString.cid
 
@@ -249,6 +254,32 @@ api.get('/dol', function (request) {
 		throw(formatResult.errorMessage)
 	}
 });
+
+api.get('/iin', function (request) {
+    return processIIN(request)
+});
+
+function processIIN(request) {
+    var iin = request.queryString.iin
+	var exact = request.queryString.exact
+
+	var message = "iin value as digits"
+	//check size between 2 and 6
+    var formatResult = utils.formatChecker(iin,0,1,3,message)
+
+    if(formatResult.formatOk){
+        var interpretedIIN = iinUtils.iinValues(iin,exact)
+        if(interpretedIIN){
+			return new api.ApiResponse(interpretedIIN, {'Content-Type': 'application/json'}, 200);
+        }
+		else{
+			throw("Internal error")
+		}          
+    }
+	else{
+		throw(formatResult.errorMessage)
+	}
+}
 
 api.get('/tag', function (request) {
     var tag = request.queryString.tag
