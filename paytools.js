@@ -263,9 +263,9 @@ function processIIN(request) {
     var iin = request.queryString.iin
 	var exact = request.queryString.exact
 
-	var message = "iin value between 3 and 6 digits"
-	//check size between 3 and 6
-    var formatResult = utils.formatChecker(iin,0,1.5,3,message)
+	var message = "iin value between 3 and 8 digits"
+	//check size between 3 and 8
+    var formatResult = utils.formatChecker(iin,0,1.5,4,message)
 
 	if(!utils.isDec){
 		throw("Not really the correct size ... Enter " + message)
