@@ -263,22 +263,25 @@ function processIIN(request) {
     var iin = request.queryString.iin
 	var exact = request.queryString.exact
 
-	var message = "iin value as digits"
-	//check size between 2 and 6
-    var formatResult = utils.formatChecker(iin,0,1,3,message)
+	var message = "iin value between 3 and 6 digits"
+	//check size between 3 and 6
+    var formatResult = utils.formatChecker(iin,0,1.5,3,message)
 
-    if(formatResult.formatOk){
-        var interpretedIIN = iinUtils.iinValues(iin,exact)
-        if(interpretedIIN){
-			return new api.ApiResponse(interpretedIIN, {'Content-Type': 'application/json'}, 200);
-        }
-		else{
-			throw("Internal error")
-		}          
-    }
-	else{
-		throw(formatResult.errorMessage)
+	if(!utils.isDec){
+		throw("Not really the correct size ... Enter " + message)
 	}
+	else if(formatResult.formatOk){
+			var interpretedIIN = iinUtils.iinValues(iin,exact)
+			if(interpretedIIN){
+				return new api.ApiResponse(interpretedIIN, {'Content-Type': 'application/json'}, 200);
+			}
+			else{
+				throw("Internal error")
+			}          
+		}
+		else{
+			throw(formatResult.errorMessage)
+		}
 }
 
 api.get('/tag', function (request) {

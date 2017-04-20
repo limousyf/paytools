@@ -31,6 +31,22 @@ exports.isHex = function(data){
     re.lastIndex = 0
 }
 
+//check that the data is in decimal format
+exports.isDec = function(data){
+
+    //console.log('Testing dec format: ', data)
+
+    var re = /^[0-9]+$/
+
+    if(re.test(data)) {
+        return true
+    } else {
+        return false
+    }
+
+    re.lastIndex = 0
+}
+
 //checks that the number of bytes is between min and max 
 //for instance 2 bytes will contain 4 hex characters
 exports.checkBytesNumber = function(data,min,max){
