@@ -267,10 +267,10 @@ function processIIN(request) {
 	//check size between 3 and 8
     var formatResult = utils.formatChecker(iin,0,1.5,4,message)
 
-	if(!utils.isDec){
-		throw("Not really the correct size ... Enter " + message)
-	}
-	else if(formatResult.formatOk){
+	if(formatResult.formatOk){
+			if(!utils.isDec(iin)){
+				throw("The value provided is not decimal")
+			}
 			var interpretedIIN = iinUtils.iinValues(iin,exact)
 			if(interpretedIIN){
 				return new api.ApiResponse(interpretedIIN, {'Content-Type': 'application/json'}, 200);
