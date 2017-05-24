@@ -27,13 +27,27 @@ module.exports = api;
 const API_VERSION = "v1"
 
 //TODO remove for production
+
+api.get('/' + API_VERSION + '/test/{test_value}', function (request) {
+	'use strict';
+	return request.pathParams.ada_value + ' is ok';
+});
+
 api.get('/' + API_VERSION + '/test', function (request) {
 	return request.queryString.name + ' is ok';
 });
 
+api.get('/' + API_VERSION + '/ada/{ada_value}', function (request) {
+	'use strict';
+	return processADA(request.pathParams.ada_value)
+});
+
 api.get('/' + API_VERSION + '/ada', function (request) {
     var ada = request.queryString.ada
+	return processADA(ada)
+});
 
+function processADA(ada){
 	var message = "B1B2B3B4"
     var formatResult = utils.formatChecker(ada,1,4,4,message)
 
@@ -49,12 +63,20 @@ api.get('/' + API_VERSION + '/ada', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/aid/{aid_value}', function (request) {
+	'use strict';
+	return processAID(request.pathParams.aid_value,true)
 });
 
 api.get('/' + API_VERSION + '/aid', function (request) {
     var aid = request.queryString.aid
 	var exact = request.queryString.exact
+	return processAID(aid,exact)
+});
 
+function processAID(aid,exact){
 	var message = "aid value in hexadecimal"
     var formatResult = utils.formatChecker(aid,1,0,0,message)
 
@@ -70,11 +92,19 @@ api.get('/' + API_VERSION + '/aid', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/aip/{aip_value}', function (request) {
+	'use strict';
+	return processAIP(request.pathParams.aip_value)
 });
 
 api.get('/' + API_VERSION + '/aip', function (request) {
     var aip = request.queryString.aip
+	return processAIP(aip)
+});
 
+function processAIP(aip){
 	var message = "B1B2"
     var formatResult = utils.formatChecker(aip,1,2,2,message)
 
@@ -90,11 +120,19 @@ api.get('/' + API_VERSION + '/aip', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/arc/{arc_value}', function (request) {
+	'use strict';
+	return processARC(request.pathParams.arc_value)
 });
 
 api.get('/' + API_VERSION + '/arc', function (request) {
     var arc = request.queryString.arc
+	return processARC(arc)
+});
 
+function processARC(arc){
 	var message = "XX"
     var formatResult = utils.formatChecker(arc,0,1,1,message)
 
@@ -110,11 +148,19 @@ api.get('/' + API_VERSION + '/arc', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/auc/{auc_value}', function (request) {
+	'use strict';
+	return processAUC(request.pathParams.auc_value)
 });
 
 api.get('/' + API_VERSION + '/auc', function (request) {
     var auc = request.queryString.auc
+	return processAUC(auc)
+});
 
+function processAUC(auc){
 	var message = "B1B2"
     var formatResult = utils.formatChecker(auc,1,2,2,message)
 
@@ -130,12 +176,20 @@ api.get('/' + API_VERSION + '/auc', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/avs/{scheme_value}/{avs_value}', function (request) {
+	'use strict';
+	return processAVS(request.pathParams.avs_value,request.pathParams.sheme_value)
 });
 
 api.get('/' + API_VERSION + '/avs', function (request) {
     var avs = request.queryString.avs
 	var scheme = request.queryString.scheme
+	return processAVS(avs,scheme)
+});
 
+function processAVS(avs,scheme){
 	var message = "X"
     var formatResult = utils.formatChecker(avs,0,.5,.5,message)
 
@@ -151,15 +205,30 @@ api.get('/' + API_VERSION + '/avs', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/bin/{bin_value}', function (request) {
+	'use strict';
+	return processIIN(request.pathParams.bin_value,true)
 });
 
 api.get('/' + API_VERSION + '/bin', function (request) {
-	return processIIN(request)
+    var bin = request.queryString.bin
+	var exact = request.queryString.exact
+	return processIIN(bin,exact)
+});
+
+api.get('/' + API_VERSION + '/cid/{cid_value}', function (request) {
+	'use strict';
+	return processCID(request.pathParams.cid_value)
 });
 
 api.get('/' + API_VERSION + '/cid', function (request) {
     var cid = request.queryString.cid
+	return processCID(cid)
+});
 
+function processCID(cid){
 	var message = "B1"
     var formatResult = utils.formatChecker(cid,1,1,1,message)
 
@@ -175,11 +244,19 @@ api.get('/' + API_VERSION + '/cid', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/ctq/{ctq_value}', function (request) {
+	'use strict';
+	return processCTQ(request.pathParams.ctq_value)
 });
 
 api.get('/' + API_VERSION + '/ctq', function (request) {
     var ctq = request.queryString.ctq
+	return processCTQ(ctq)
+});
 
+function processCTQ(ctq){
 	var message = "B1B2"
     var formatResult = utils.formatChecker(ctq,1,2,2,message)
 
@@ -195,11 +272,19 @@ api.get('/' + API_VERSION + '/ctq', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/cvm/{cvm_value}', function (request) {
+	'use strict';
+	return processCVM(request.pathParams.cvm_value)
 });
 
 api.get('/' + API_VERSION + '/cvm', function (request) {
     var cvm = request.queryString.cvm
+	return processCVM(cvm)
+});
 
+function processCVM(cvm){
 	var message = "B1B2B3"
     var formatResult = utils.formatChecker(cvm,1,3,3,message)
 
@@ -215,11 +300,19 @@ api.get('/' + API_VERSION + '/cvm', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/cvr/{cvr_value}', function (request) {
+	'use strict';
+	return processCVR(request.pathParams.cvr_value)
 });
 
 api.get('/' + API_VERSION + '/cvr', function (request) {
     var cvr = request.queryString.cvr
+	return processCVR(cvr)
+});
 
+function processCVR(cvr){
 	var message = "B1B2B3B4 or B1B2B3B4B5"
     var formatResult = utils.formatChecker(cvr,1,4,5,message)
 
@@ -235,11 +328,19 @@ api.get('/' + API_VERSION + '/cvr', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/dol/{dol_value}', function (request) {
+	'use strict';
+	return processDOL(request.pathParams.dol_value)
 });
 
 api.get('/' + API_VERSION + '/dol', function (request) {
     var dol = request.queryString.dol
+	return processDOL(dol)
+});
 
+function processDOL(dol){
 	var message = "dol value in hexadecimal"
     var formatResult = utils.formatChecker(dol,1,0,0,message)
 
@@ -255,15 +356,20 @@ api.get('/' + API_VERSION + '/dol', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/iin/{iin_value}', function (request) {
+	'use strict';
+	return processIIN(request.pathParams.iin_value,true)
 });
 
 api.get('/' + API_VERSION + '/iin', function (request) {
-    return processIIN(request)
-});
-
-function processIIN(request) {
     var iin = request.queryString.iin
 	var exact = request.queryString.exact
+	return processIIN(iin,exact)
+});
+
+function processIIN(iin,exact) {
 
 	var message = "iin value between 3 and 8 digits"
 	//check size between 3 and 8
@@ -286,10 +392,18 @@ function processIIN(request) {
 		}
 }
 
+api.get('/' + API_VERSION + '/tag/{tag_value}', function (request) {
+	'use strict';
+	return processTag(request.pathParams.tag_value,true)
+});
+
 api.get('/' + API_VERSION + '/tag', function (request) {
     var tag = request.queryString.tag
 	var exact = request.queryString.exact
+	return processTag(tag,exact)
+});
 
+function processTag(tag,exact){
 	var message = "tag value in hexadecimal"
     var formatResult = utils.formatChecker(tag,1,0,0,message)
 
@@ -305,11 +419,19 @@ api.get('/' + API_VERSION + '/tag', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/termcap/{termcap_value}', function (request) {
+	'use strict';
+	return processTermCap(request.pathParams.termcap_value)
 });
 
 api.get('/' + API_VERSION + '/termcap', function (request) {
     var termcap = request.queryString.termcap
+	return processTermCap(termcap)
+});
 
+function processTermCap(termcap){
 	var message = "B1B2B3"
     var formatResult = utils.formatChecker(termcap,1,3,3,message)
 
@@ -325,11 +447,19 @@ api.get('/' + API_VERSION + '/termcap', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/termtype/{termtype_value}', function (request) {
+	'use strict';
+	return processTermType(request.pathParams.termtype_value)
 });
 
 api.get('/' + API_VERSION + '/termtype', function (request) {
-    var termtype = request.queryString.termtype
+    var termType = request.queryString.termtype
+	return processTermType(termType)
+});
 
+function processTermType(termType){
 	var message = "NN"
     var formatResult = utils.formatChecker(termtype,0,1,1,message)
 
@@ -345,7 +475,7 @@ api.get('/' + API_VERSION + '/termtype', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
-});
+};
 
 api.get('/' + API_VERSION + '/tsi/{tsi_value}', function (request) {
 	'use strict';
@@ -377,9 +507,17 @@ function processTSI(tsi){
 	}
 };
 
+api.get('/' + API_VERSION + '/ttq/{ttq_value}', function (request) {
+	'use strict';
+	return processTTQ(request.pathParams.ttq_value)
+});
+
 api.get('/' + API_VERSION + '/ttq', function (request) {
     var ttq = request.queryString.ttq
+	return processTTQ(ttq)
+});
 
+function processTTQ(ttq) {
 	var message = "B1B2B3 B1B2B3B4"
     var formatResult = utils.formatChecker(ttq,1,3,4,message)
 
@@ -395,11 +533,19 @@ api.get('/' + API_VERSION + '/ttq', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/tvr/{tvr_value}', function (request) {
+	'use strict';
+	return processTVR(request.pathParams.tvr_value)
 });
 
 api.get('/' + API_VERSION + '/tvr', function (request) {
     var tvr = request.queryString.tvr
+	return processTVR(tvr)
+});
 
+function processTVR(tvr){
 	var message = "B1B2B3B4B5"
     var formatResult = utils.formatChecker(tvr,1,5,5,message)
 
@@ -415,4 +561,4 @@ api.get('/' + API_VERSION + '/tvr', function (request) {
 	else{
 		throw(formatResult.errorMessage)
 	}
-});
+};
