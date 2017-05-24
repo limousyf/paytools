@@ -461,10 +461,10 @@ api.get('/' + API_VERSION + '/termtype', function (request) {
 
 function processTermType(termType){
 	var message = "NN"
-    var formatResult = utils.formatChecker(termtype,0,1,1,message)
+    var formatResult = utils.formatChecker(termType,0,1,1,message)
 
     if(formatResult.formatOk){
-        var interpretedTermType = termTypeUtils.decodeTermType(termtype)
+        var interpretedTermType = termTypeUtils.decodeTermType(termType)
         if(interpretedTermType != ""){
 			return new api.ApiResponse(interpretedTermType, {'Content-Type': 'application/json'}, 200);
         }

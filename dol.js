@@ -13,8 +13,14 @@ exports.decodeDOL = function(dol){
 
         //console.log("Bytes found in DOL: " + splitDOL.length)
         
+        var startPoint=0
+        //if starting by 83 (tag for DOL), removing dol tag and length from the analysis
+        if(splitDOL[0] == "83"){
+            startPoint = 2
+        }
+
         //loop on value byte per byte
-        for(var i=0;i<splitDOL.length;i++){
+        for(var i=startPoint;i<splitDOL.length;i++){
             var tag = splitDOL[i]
             var binTag = utils.Hex2Bin(tag)
             //console.log("bin tag: " + binTag)
