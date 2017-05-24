@@ -24,12 +24,14 @@ var ApiBuilder = require('claudia-api-builder'),
 
 module.exports = api;
 
+const API_VERSION = "v1"
+
 //TODO remove for production
-api.get('/test', function (request) {
+api.get('/' + API_VERSION + '/test', function (request) {
 	return request.queryString.name + ' is ok';
 });
 
-api.get('/ada', function (request) {
+api.get('/' + API_VERSION + '/ada', function (request) {
     var ada = request.queryString.ada
 
 	var message = "B1B2B3B4"
@@ -49,7 +51,7 @@ api.get('/ada', function (request) {
 	}
 });
 
-api.get('/aid', function (request) {
+api.get('/' + API_VERSION + '/aid', function (request) {
     var aid = request.queryString.aid
 	var exact = request.queryString.exact
 
@@ -70,7 +72,7 @@ api.get('/aid', function (request) {
 	}
 });
 
-api.get('/aip', function (request) {
+api.get('/' + API_VERSION + '/aip', function (request) {
     var aip = request.queryString.aip
 
 	var message = "B1B2"
@@ -90,7 +92,7 @@ api.get('/aip', function (request) {
 	}
 });
 
-api.get('/arc', function (request) {
+api.get('/' + API_VERSION + '/arc', function (request) {
     var arc = request.queryString.arc
 
 	var message = "XX"
@@ -110,7 +112,7 @@ api.get('/arc', function (request) {
 	}
 });
 
-api.get('/auc', function (request) {
+api.get('/' + API_VERSION + '/auc', function (request) {
     var auc = request.queryString.auc
 
 	var message = "B1B2"
@@ -130,7 +132,7 @@ api.get('/auc', function (request) {
 	}
 });
 
-api.get('/avs', function (request) {
+api.get('/' + API_VERSION + '/avs', function (request) {
     var avs = request.queryString.avs
 	var scheme = request.queryString.scheme
 
@@ -151,11 +153,11 @@ api.get('/avs', function (request) {
 	}
 });
 
-api.get('/bin', function (request) {
+api.get('/' + API_VERSION + '/bin', function (request) {
 	return processIIN(request)
 });
 
-api.get('/cid', function (request) {
+api.get('/' + API_VERSION + '/cid', function (request) {
     var cid = request.queryString.cid
 
 	var message = "B1"
@@ -175,7 +177,7 @@ api.get('/cid', function (request) {
 	}
 });
 
-api.get('/ctq', function (request) {
+api.get('/' + API_VERSION + '/ctq', function (request) {
     var ctq = request.queryString.ctq
 
 	var message = "B1B2"
@@ -195,7 +197,7 @@ api.get('/ctq', function (request) {
 	}
 });
 
-api.get('/cvm', function (request) {
+api.get('/' + API_VERSION + '/cvm', function (request) {
     var cvm = request.queryString.cvm
 
 	var message = "B1B2B3"
@@ -215,7 +217,7 @@ api.get('/cvm', function (request) {
 	}
 });
 
-api.get('/cvr', function (request) {
+api.get('/' + API_VERSION + '/cvr', function (request) {
     var cvr = request.queryString.cvr
 
 	var message = "B1B2B3B4 or B1B2B3B4B5"
@@ -235,7 +237,7 @@ api.get('/cvr', function (request) {
 	}
 });
 
-api.get('/dol', function (request) {
+api.get('/' + API_VERSION + '/dol', function (request) {
     var dol = request.queryString.dol
 
 	var message = "dol value in hexadecimal"
@@ -255,7 +257,7 @@ api.get('/dol', function (request) {
 	}
 });
 
-api.get('/iin', function (request) {
+api.get('/' + API_VERSION + '/iin', function (request) {
     return processIIN(request)
 });
 
@@ -284,7 +286,7 @@ function processIIN(request) {
 		}
 }
 
-api.get('/tag', function (request) {
+api.get('/' + API_VERSION + '/tag', function (request) {
     var tag = request.queryString.tag
 	var exact = request.queryString.exact
 
@@ -305,7 +307,7 @@ api.get('/tag', function (request) {
 	}
 });
 
-api.get('/termcap', function (request) {
+api.get('/' + API_VERSION + '/termcap', function (request) {
     var termcap = request.queryString.termcap
 
 	var message = "B1B2B3"
@@ -325,7 +327,7 @@ api.get('/termcap', function (request) {
 	}
 });
 
-api.get('/termtype', function (request) {
+api.get('/' + API_VERSION + '/termtype', function (request) {
     var termtype = request.queryString.termtype
 
 	var message = "NN"
@@ -345,9 +347,17 @@ api.get('/termtype', function (request) {
 	}
 });
 
-api.get('/tsi', function (request) {
-    var tsi = request.queryString.tsi
+api.get('/' + API_VERSION + '/tsi/{tsi_value}', function (request) {
+	'use strict';
+	return processTSI(request.pathParams.tsi_value)
+});
 
+api.get('/' + API_VERSION + '/tsi', function (request) {
+    var tsi = request.queryString.tsi
+	return processTSI(tsi)
+});
+
+function processTSI(tsi){
 	var message = "B1 or B1B2"
     var formatResult = utils.formatChecker(tsi,1,1,2,message)
 
@@ -361,12 +371,13 @@ api.get('/tsi', function (request) {
 		}    
     }
 	else{
-		//return new api.ApiResponse(formatResult.errorMessage, {'Content-Type': 'application/json'}, 500);
-		throw(formatResult.errorMessage)
-	}
-});
+		return new api.ApiResponse(formatResult, {'Content-Type': 'application/json'}, 400);
+		//throw(formatResult.errorMessage)
 
-api.get('/ttq', function (request) {
+	}
+};
+
+api.get('/' + API_VERSION + '/ttq', function (request) {
     var ttq = request.queryString.ttq
 
 	var message = "B1B2B3 B1B2B3B4"
@@ -386,7 +397,7 @@ api.get('/ttq', function (request) {
 	}
 });
 
-api.get('/tvr', function (request) {
+api.get('/' + API_VERSION + '/tvr', function (request) {
     var tvr = request.queryString.tvr
 
 	var message = "B1B2B3B4B5"
