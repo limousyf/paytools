@@ -246,6 +246,34 @@ function processCID(cid){
 	}
 };
 
+api.get('/' + API_VERSION + '/csu/{csu_value}', function (request) {
+	'use strict';
+	return processCSU(request.pathParams.csu_value)
+});
+
+api.get('/' + API_VERSION + '/csu', function (request) {
+    var csu = request.queryString.csu
+	return processCSU(csu)
+});
+
+function processCSU(csu){
+	var message = "B1B2B3B4"
+    var formatResult = utils.formatChecker(csu,1,4,4,message)
+
+    if(formatResult.formatOk){
+        var interpretedCSU = csuUtils.decodeCSU(csu)
+        if(interpretedCSU){
+			return new api.ApiResponse(interpretedCSU, {'Content-Type': 'application/json'}, 200);
+        }
+		else{
+			throw("Internal error")
+		}          
+    }
+	else{
+		return new api.ApiResponse(utils.formatError(formatResult.errorMessage), {'Content-Type': 'application/json'}, 400);
+	}
+};
+
 api.get('/' + API_VERSION + '/ctq/{ctq_value}', function (request) {
 	'use strict';
 	return processCTQ(request.pathParams.ctq_value)

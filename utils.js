@@ -148,3 +148,8 @@ exports.createBitValue = function(bit,value){
     }
     return bit
 }
+
+exports.formatError = function(errorMessage,originalInput){
+    return errorMessage
+    //TODO, create JSON structure with input
+}
