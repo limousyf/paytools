@@ -28,9 +28,9 @@ exports.decodeCSU = function(value){
       var csuB1LeftNibbleBin = utils.Hex2Bin(csuB1LeftNibble);
       
       for(i=0;i<csuB1LeftNibbleBin.length;i++){
-          var b = 4-i
+          var b = 8-i
           if(csuB1LeftNibbleBin[i] == 1){    
-              interpretedCSU.byte1.push(utils.createBitValue(b,csuValuesAt(1,i)))
+              interpretedCSU.byte1.push(utils.createBitValue(b,csuValuesAt(1,b,i)))
           }
       }
 
@@ -47,9 +47,9 @@ exports.decodeCSU = function(value){
       var csuB2b8to3 = csuB2bin.substr(0,6)
       
       for(i=0;i<csuB2b8to3.length;i++){
-          var b = 6-i
+          var b = 8-i
           if(csuB2b8to3[i] == 1){    
-              interpretedCSU.byte2.push(utils.createBitValue(b,csuValuesAt(2,i)))
+              interpretedCSU.byte2.push(utils.createBitValue(b,csuValuesAt(2,b,i)))
           }
       }
 
@@ -136,14 +136,14 @@ function csuValuesAt(byte, position, value){
     if(byte == 1){
       //B1
       if((position <= 8) && (position >=5)){
-        return csuResultsB1[position]
+        return csuResultsB1LeftNibble[value]
       }
     }
     else if(byte == 2){
       //B2
         if((position <= 8) && (position >=3)){
           //bitfield
-          return csuResultsB2b8to3[position]
+          return csuResultsB2b8to3[value]
         }
         else if ((position == 2) || (position == 1)){
             return csuResultsB2b2b1[value]
