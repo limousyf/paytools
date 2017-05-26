@@ -3,6 +3,7 @@ var cvrUtils = require('./cvr');
 var adaUtils = require('./ada');
 var cidUtils = require('./cid');
 var arcUtils = require('./arc');
+var csuUtils = require('./csu');
 var ctqUtils = require('./ctq');
 var ttqUtils = require('./ttq');
 var dolUtils = require('./dol');
