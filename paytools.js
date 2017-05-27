@@ -271,7 +271,8 @@ function processCSU(csu){
 		}          
     }
 	else{
-		return new api.ApiResponse(utils.formatError(formatResult.errorMessage), {'Content-Type': 'application/json'}, 400);
+		return new api.ApiResponse(utils.formatError(formatResult.errorMessage,csu), 
+		{'Content-Type': 'application/json'}, 400);
 	}
 };
 
