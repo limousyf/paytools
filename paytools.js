@@ -1,6 +1,7 @@
 
 var cvrUtils = require('./cvr');
 var adaUtils = require('./ada');
+var capUtils = require('./cap');
 var cidUtils = require('./cid');
 var arcUtils = require('./arc');
 var csuUtils = require('./csu');
@@ -219,10 +220,34 @@ api.get('/' + API_VERSION + '/bin', function (request) {
 	return processIIN(bin,exact)
 });
 
-api.get('/' + API_VERSION + '/cid/{cid_value}', function (request) {
+api.get('/' + API_VERSION + '/cap/{cap_value}', function (request) {
 	'use strict';
-	return processCID(request.pathParams.cid_value)
+	return processCAP(request.pathParams.cap_value)
 });
+
+api.get('/' + API_VERSION + '/cap', function (request) {
+    var cap = request.queryString.cap
+	return processCAP(cap)
+});
+
+function processCAP(cap){
+	var message = "B1B2B3B4"
+    var formatResult = utils.formatChecker(cap,1,4,4,message)
+
+    if(formatResult.formatOk){
+        var interpretedCAP = capUtils.decodeCAP(cap)
+        if(interpretedCAP){
+			return new api.ApiResponse(interpretedCAP, {'Content-Type': 'application/json'}, 200);
+        }
+		else{
+			throw("Internal error")
+		}     
+    }
+	else{
+		return new api.ApiResponse(utils.formatError(formatResult.errorMessage,cap), 
+		{'Content-Type': 'application/json'}, 400);
+	}
+};
 
 api.get('/' + API_VERSION + '/cid', function (request) {
     var cid = request.queryString.cid
