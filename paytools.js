@@ -21,6 +21,8 @@ var tsiUtils = require('./tsi');
 var avsUtils = require('./avs');
 var iinUtils = require('./iin');
 var luhnUtils = require('./luhn');
+var currencyUtils = require('./currency');
+var countryUtils = require('./country');
 
 var ApiBuilder = require('claudia-api-builder'),
 	api = new ApiBuilder();
@@ -273,6 +275,36 @@ function processCID(cid){
 	}
 };
 
+api.get('/' + API_VERSION + '/country/{num_value}', function (request) {
+	'use strict';
+	return processCountry(request.pathParams.num_value,true)
+});
+
+api.get('/' + API_VERSION + '/country', function (request) {
+    var num = request.queryString.num
+	return processCountry(num)
+});
+
+function processCountry(num){
+	var message = "country code value in decimal"
+    var formatResult = utils.formatChecker(num,0,.5,1.5,message)
+
+    if(formatResult.formatOk){
+        var interpretedCountry = countryUtils.countryCodeValues(num)
+        if(interpretedCountry){
+			return new api.ApiResponse(interpretedCountry, {'Content-Type': 'application/json'}, 200);
+        }
+		else{
+			return new api.ApiResponse(utils.formatError("Country code not found",num), 
+		{'Content-Type': 'application/json'}, 400);
+		}          
+    }
+	else{
+		return new api.ApiResponse(utils.formatError(formatResult.errorMessage,num), 
+		{'Content-Type': 'application/json'}, 400);
+	}
+};
+
 api.get('/' + API_VERSION + '/csu/{csu_value}', function (request) {
 	'use strict';
 	return processCSU(request.pathParams.csu_value)
@@ -327,6 +359,36 @@ function processCTQ(ctq){
     }
 	else{
 		throw(formatResult.errorMessage)
+	}
+};
+
+api.get('/' + API_VERSION + '/currency/{num_value}', function (request) {
+	'use strict';
+	return processCurrency(request.pathParams.num_value,true)
+});
+
+api.get('/' + API_VERSION + '/currency', function (request) {
+    var num = request.queryString.num
+	return processCurrency(num)
+});
+
+function processCurrency(num){
+	var message = "num value in decimal"
+    var formatResult = utils.formatChecker(num,0,0,1.5,message)
+
+    if(formatResult.formatOk){
+        var interpretedCurrency = currencyUtils.currencyCodeValues(num)
+        if(interpretedCurrency){
+			return new api.ApiResponse(interpretedCurrency, {'Content-Type': 'application/json'}, 200);
+        }
+		else{
+			return new api.ApiResponse(utils.formatError("Currency code not found",num), 
+		{'Content-Type': 'application/json'}, 400);
+		}          
+    }
+	else{
+		return new api.ApiResponse(utils.formatError(formatResult.errorMessage,num), 
+		{'Content-Type': 'application/json'}, 400);
 	}
 };
 
