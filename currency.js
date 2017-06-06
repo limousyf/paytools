@@ -202,11 +202,11 @@ exports.currencyCodeValues = function(currencyCode){
 
     for (var i = 0; i < test.length; i++)
     {
-        var toTest = test[i].num
+        var toTest = test[i].numeric
         //console.log('Testing: ' + toTest);
         if(toTest.match(regex)){
             results.code = test[i].code
-            results.num = test[i].num
+            results.numeric = test[i].numeric
             results.exponent = test[i].exponent
             results.currency = test[i].currency
             results.countries = test[i].countries

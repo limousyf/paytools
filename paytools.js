@@ -287,7 +287,7 @@ api.get('/' + API_VERSION + '/country', function (request) {
 
 function processCountry(num){
 	var message = "country code value in decimal"
-    var formatResult = utils.formatChecker(num,0,.5,1.5,message)
+    var formatResult = utils.decimalFormatChecker(num,1,3,message)
 
     if(formatResult.formatOk){
         var interpretedCountry = countryUtils.countryCodeValues(num)
@@ -374,7 +374,7 @@ api.get('/' + API_VERSION + '/currency', function (request) {
 
 function processCurrency(num){
 	var message = "num value in decimal"
-    var formatResult = utils.formatChecker(num,0,0,1.5,message)
+    var formatResult = utils.decimalFormatChecker(num,1,3,message)
 
     if(formatResult.formatOk){
         var interpretedCurrency = currencyUtils.currencyCodeValues(num)

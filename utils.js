@@ -109,6 +109,62 @@ function splitChars(value, num) {
   return result;
 }
 
+exports.decimalFormatChecker = function(value, minSize, maxSize, genericMessage){
+        var format = true
+	var message
+	
+	if(value){
+        //testing for decimal format
+        if(!module.exports.isDec(value)){
+            message = "It doesn't look to be in decimal format";
+            format = false
+        }
+        
+        //testing for size
+        if(format){
+            if(!module.exports.checkGenericSize(value,minSize,maxSize)){
+                message = "Not really the correct size ... Enter " + genericMessage
+				format = false
+            }
+        }
+    }
+    else{
+		message = "No parameter entered ... Enter " + genericMessage
+		format = false
+    }
+	
+	return{
+		formatOk : format,
+		errorMessage : message
+	}
+}
+
+exports.checkGenericSize = function(value,minSize,maxSize){
+    minCheck = false;
+    maxCheck = false;
+    if(value){
+        if(minSize){
+            //just check for minimal size
+            if(value.length >= minSize){
+                minCheck = true
+            }
+        }
+        else{
+            minCheck = true
+        }
+        if(maxSize){
+            //just check for minimal size
+            if(value.length <= maxSize){
+                maxCheck = true
+            }
+        }
+        else{
+            maxCheck = true
+        }
+    }
+   return minCheck & maxCheck
+}
+
 exports.formatChecker = function(value, isHex, minSize, maxSize, genericMessage){
     var format = true
 	var message
