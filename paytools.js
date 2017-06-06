@@ -20,6 +20,7 @@ var tvrUtils = require('./tvr');
 var tsiUtils = require('./tsi');
 var avsUtils = require('./avs');
 var iinUtils = require('./iin');
+var luhnUtils = require('./luhn');
 
 var ApiBuilder = require('claudia-api-builder'),
 	api = new ApiBuilder();
@@ -445,6 +446,93 @@ function processIIN(iin,exact) {
 		else{
 			throw(formatResult.errorMessage)
 		}
+}
+
+api.get('/' + API_VERSION + '/luhncheck', function (request) {
+    var num_value = request.queryString.numvalue
+	var checkDigit = request.queryString.checkdigit
+	return checkLuhn(num_value,checkDigit)
+});
+
+api.get('/' + API_VERSION + '/luhncompute/{num_value}', function (request) {
+	'use strict';
+	return computeLuhn(request.pathParams.num_value)
+});
+
+api.get('/' + API_VERSION + '/luhncompute', function (request) {
+    var num_value = request.queryString.numvalue
+	return computeLuhn(num_value)
+});
+
+api.get('/' + API_VERSION + '/mod10check', function (request) {
+    var num_value = request.queryString.numvalue
+	var checkDigit = request.queryString.checkdigit
+	return checkLuhn(num_value,checkDigit)
+});
+
+api.get('/' + API_VERSION + '/mod10compute/{num_value}', function (request) {
+	'use strict';
+	return computeLuhn(request.pathParams.num_value)
+});
+
+api.get('/' + API_VERSION + '/mod10compute', function (request) {
+    var num_value = request.queryString.numvalue
+	return computeLuhn(num_value)
+});
+
+function checkLuhn(numValue,checkDigit) {
+
+	var message = "a numeric value of at least 1 digit"
+    var formatResult = utils.formatChecker(numValue,0,0.5,100,message)
+
+	if(formatResult.formatOk){
+			if(!utils.isDec(numValue)){
+				throw("The value provided is not in decimal format")
+			}
+			if (checkDigit && (!utils.isDec(checkDigit))){
+				throw("The check digit provided is not in decimal format")
+			}
+			var result = luhnUtils.checkLuhnDigit(numValue,checkDigit)
+			var expectedCheckDigit = luhnUtils.computeLuhnDigit(numValue)
+			var returnValue = {
+				"value" : numValue,
+				"checkDigit" : checkDigit,
+				"expectedCheckDigit" : expectedCheckDigit,
+				"result" : false
+			}
+			if(result){
+				returnValue = {
+					"result" : true
+				}
+			}
+			return new api.ApiResponse(returnValue, {'Content-Type': 'application/json'}, 200);        
+		}
+		else{
+			return new api.ApiResponse(utils.formatError(formatResult.errorMessage,numValue), 
+		{'Content-Type': 'application/json'}, 400);
+		}
+}
+
+function computeLuhn(numValue) {
+
+	var message = "Numeric value should be at least 1 digit"
+    var formatResult = utils.formatChecker(numValue,0,0.5,100,message)
+
+	if(formatResult.formatOk){
+			if(!utils.isDec(numValue)){
+				throw("The value provided is not in decimal format")
+			}
+			var result = luhnUtils.computeLuhnDigit(numValue)
+			var returnValue = {
+				"value" : numValue,
+				"checkDigit" : result
+			}
+			return new api.ApiResponse(returnValue, {'Content-Type': 'application/json'}, 200);       
+	}
+	else{
+		return new api.ApiResponse(utils.formatError(formatResult.errorMessage,numValue), 
+		{'Content-Type': 'application/json'}, 400);
+	}
 }
 
 api.get('/' + API_VERSION + '/tag/{tag_value}', function (request) {
