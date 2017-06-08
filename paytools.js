@@ -544,16 +544,18 @@ api.get('/' + API_VERSION + '/mod10compute', function (request) {
 
 function checkLuhn(numValue,checkDigit) {
 
-	var message = "a numeric value of at least 1 digit"
-    var formatResult = utils.formatChecker(numValue,0,0.5,100,message)
+	var valueMessage = "a numeric value of at least 1 digit"
+	var checkMessage = "a check value (1 digit)"
+    var formatValueResult = utils.decimalFormatChecker(numValue,1,null,valueMessage)
+	var formatCheckResult = utils.decimalFormatChecker(checkDigit,1,1,checkMessage)
 
-	if(formatResult.formatOk){
-			if(!utils.isDec(numValue)){
+	if(formatValueResult.formatOk && formatCheckResult.formatOk){
+			/*if(!utils.isDec(numValue)){
 				throw("The value provided is not in decimal format")
 			}
 			if (checkDigit && (!utils.isDec(checkDigit))){
 				throw("The check digit provided is not in decimal format")
-			}
+			}*/
 			var result = luhnUtils.checkLuhnDigit(numValue,checkDigit)
 			var expectedCheckDigit = luhnUtils.computeLuhnDigit(numValue)
 			var returnValue = {
@@ -570,8 +572,14 @@ function checkLuhn(numValue,checkDigit) {
 			return new api.ApiResponse(returnValue, {'Content-Type': 'application/json'}, 200);        
 		}
 		else{
-			return new api.ApiResponse(utils.formatError(formatResult.errorMessage,numValue), 
-		{'Content-Type': 'application/json'}, 400);
+			if(!formatValueResult.formatOk){
+				return new api.ApiResponse(utils.formatError(formatValueResult.errorMessage,numValue), 
+					{'Content-Type': 'application/json'}, 400);
+			}
+			else{
+				return new api.ApiResponse(utils.formatError(formatCheckResult.errorMessage,checkDigit), 
+					{'Content-Type': 'application/json'}, 400);
+			}
 		}
 }
 
