@@ -169,10 +169,12 @@ exports.formatChecker = function(value, isHex, minSize, maxSize, genericMessage)
     var format = true
 	var message
 	
-	if(value){
+	var valueProcessed = removeSpaces(value)
+	
+	if(valueProcessed){
         if(isHex){
             //testing for hex format
-            if(!module.exports.isHex(value)){
+            if(!module.exports.isHex(valueProcessed)){
                 message = "It doesn't look to be in hex format";
 				format = false
             }
@@ -215,11 +217,11 @@ exports.createBitValue = function(bit,value){
     return errorObj;
 }
 
- exports.removeSpaces = function(input){
-var str = input
-str = str.replace(/\s+/g, '');	 
-return str
- }
+function removeSpaces(input){
+  var str = input
+  str = str.replace(/\s+/g, '');	 
+  return str
+}
  
 //Binary Operations
 function Bin2Dec(n){if(!checkBin(n))return 0;return parseInt(n,2).toString(10)}
