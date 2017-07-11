@@ -215,6 +215,12 @@ exports.createBitValue = function(bit,value){
     return errorObj;
 }
 
+ exports.removeSpaces = function(input){
+var str = input
+str = str.replace(/\s+/g, '');	 
+return str
+ }
+ 
 //Binary Operations
 function Bin2Dec(n){if(!checkBin(n))return 0;return parseInt(n,2).toString(10)}
 //function Bin2Hex(n){if(!checkBin(n))return 0;return parseInt(n,2).toString(16)}
