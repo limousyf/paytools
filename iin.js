@@ -16,7 +16,7 @@ exports.iinValues = function(iin, exact){
 
     var regex = new RegExp(iin,"gi");
     
-    if(exact){
+    if(exact == 'true'){
         regex = new RegExp("^"+iin+"$","i");
     }
     

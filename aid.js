@@ -17,7 +17,7 @@ exports.aidValues = function(aid, exact){
 
     var regex = new RegExp(aid,"gi");
     
-    if(exact){
+    if(exact == 'true'){
         regex = new RegExp("^"+aid+"$","i");
     }
     

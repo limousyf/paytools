@@ -151,7 +151,7 @@ exports.tagValues = function(tag, exact){
     //console.log('Getting value: ' + tag)
 
     var regex = new RegExp(tag,"gi");
-    if(exact){
+    if(exact == 'true'){
         regex = new RegExp("^"+tag+"$","i");
     }
     let m;
@@ -186,7 +186,7 @@ exports.tagNames = function(tagname, exact){
     //console.log('Getting value: ' + tag)
 
     var regex = new RegExp(tagname,"gi");
-    if(exact){
+    if(exact == 'true'){
         regex = new RegExp("^"+tagname+"$","i");
     }
     let m;
