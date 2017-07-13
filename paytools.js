@@ -394,7 +394,7 @@ function processCurrency(num){
 			return new api.ApiResponse(interpretedCurrency, {'Content-Type': 'application/json'}, 200);
         }
 		else{
-			return new api.ApiResponse(utils.formatError("Currency code not found",trimValue), 
+			return new api.ApiResponse(utils.formatError("Currency code not found",num), 
 		{'Content-Type': 'application/json'}, 400);
 		}          
     }
@@ -647,7 +647,8 @@ function processTag(tag,exact){
 		}          
     }
 	else{
-		throw(formatResult.errorMessage)
+		return new api.ApiResponse(utils.formatError(formatResult.errorMessage,tag), 
+		{'Content-Type': 'application/json'}, 400);
 	}
 };
 
