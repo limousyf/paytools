@@ -54,10 +54,11 @@ api.get('/' + API_VERSION + '/ada', function (request) {
 
 function processADA(ada){
 	var message = "B1B2B3B4"
-    var formatResult = utils.formatChecker(ada,1,4,4,message)
+	var trimValue = utils.removeSpaces(ada)
+    var formatResult = utils.formatChecker(trimValue,1,4,4,message)
 
     if(formatResult.formatOk){
-        var interpretedADA = adaUtils.decodeADA(ada)
+        var interpretedADA = adaUtils.decodeADA(trimValue)
         if(interpretedADA){
 			return new api.ApiResponse(interpretedADA, {'Content-Type': 'application/json'}, 200);
         }
@@ -83,10 +84,11 @@ api.get('/' + API_VERSION + '/aid', function (request) {
 
 function processAID(aid,exact){
 	var message = "aid value in hexadecimal"
-    var formatResult = utils.formatChecker(aid,1,0,0,message)
+	var trimValue = utils.removeSpaces(aid)
+    var formatResult = utils.formatChecker(trimValue,1,0,0,message)
 
     if(formatResult.formatOk){
-        var interpretedAID = aidUtils.aidValues(aid,exact)
+        var interpretedAID = aidUtils.aidValues(trimValue,exact)
         if(interpretedAID){
 			return new api.ApiResponse(interpretedAID, {'Content-Type': 'application/json'}, 200);
         }
@@ -111,10 +113,11 @@ api.get('/' + API_VERSION + '/aip', function (request) {
 
 function processAIP(aip){
 	var message = "B1B2"
-    var formatResult = utils.formatChecker(aip,1,2,2,message)
+	var trimValue = utils.removeSpaces(aip)
+    var formatResult = utils.formatChecker(trimValue,1,2,2,message)
 
     if(formatResult.formatOk){
-        var interpretedAIP = aipUtils.decodeAIP(aip)
+        var interpretedAIP = aipUtils.decodeAIP(trimValue)
         if(interpretedAIP != ""){
 			return new api.ApiResponse(interpretedAIP, {'Content-Type': 'application/json'}, 200);
         }
@@ -139,10 +142,11 @@ api.get('/' + API_VERSION + '/arc', function (request) {
 
 function processARC(arc){
 	var message = "XX"
-    var formatResult = utils.formatChecker(arc,0,1,1,message)
+	var trimValue = utils.removeSpaces(arc)
+    var formatResult = utils.formatChecker(trimValue,0,1,1,message)
 
     if(formatResult.formatOk){
-        var interpretedARC = arcUtils.decodeARC(arc)
+        var interpretedARC = arcUtils.decodeARC(trimValue)
         if(interpretedARC != ""){
 			return new api.ApiResponse(interpretedARC, {'Content-Type': 'application/json'}, 200);
         }
@@ -167,10 +171,11 @@ api.get('/' + API_VERSION + '/auc', function (request) {
 
 function processAUC(auc){
 	var message = "B1B2"
-    var formatResult = utils.formatChecker(auc,1,2,2,message)
+	var trimValue = utils.removeSpaces(auc)
+    var formatResult = utils.formatChecker(trimValue,1,2,2,message)
 
     if(formatResult.formatOk){
-        var interpretedAUC = aucUtils.decodeAUC(auc)
+        var interpretedAUC = aucUtils.decodeAUC(trimValue)
         if(interpretedAUC){
 			return new api.ApiResponse(interpretedAUC, {'Content-Type': 'application/json'}, 200);
         }
@@ -196,10 +201,11 @@ api.get('/' + API_VERSION + '/avs', function (request) {
 
 function processAVS(avs,scheme){
 	var message = "X"
-    var formatResult = utils.formatChecker(avs,0,.5,.5,message)
+	var trimValue = utils.removeSpaces(avs)
+    var formatResult = utils.formatChecker(trimValue,0,.5,.5,message)
 
     if(formatResult.formatOk){
-        var interpretedAVS= avsUtils.decodeAVS(avs, scheme)
+        var interpretedAVS= avsUtils.decodeAVS(trimValue, scheme)
         if(interpretedAVS != ""){
 			return new api.ApiResponse(interpretedAVS, {'Content-Type': 'application/json'}, 200);
         }
@@ -235,10 +241,11 @@ api.get('/' + API_VERSION + '/cap', function (request) {
 
 function processCAP(cap){
 	var message = "B1B2B3B4"
-    var formatResult = utils.formatChecker(cap,1,4,4,message)
+	var trimValue = utils.removeSpaces(cap)
+    var formatResult = utils.formatChecker(trimValue,1,4,4,message)
 
     if(formatResult.formatOk){
-        var interpretedCAP = capUtils.decodeCAP(cap)
+        var interpretedCAP = capUtils.decodeCAP(trimValue)
         if(interpretedCAP){
 			return new api.ApiResponse(interpretedCAP, {'Content-Type': 'application/json'}, 200);
         }
@@ -259,10 +266,11 @@ api.get('/' + API_VERSION + '/cid', function (request) {
 
 function processCID(cid){
 	var message = "B1"
+	var trimValue = utils.removeSpaces(cid)
     var formatResult = utils.formatChecker(cid,1,1,1,message)
 
     if(formatResult.formatOk){
-        var interpretedCID = cidUtils.decodeCID(cid)
+        var interpretedCID = cidUtils.decodeCID(trimValue)
         if(interpretedCID){
 			return new api.ApiResponse(interpretedCID, {'Content-Type': 'application/json'}, 200);
         }
@@ -287,20 +295,21 @@ api.get('/' + API_VERSION + '/country', function (request) {
 
 function processCountry(num){
 	var message = "country code value in decimal"
-    var formatResult = utils.decimalFormatChecker(num,1,3,message)
+	var trimValue = utils.removeSpaces(num)
+    var formatResult = utils.decimalFormatChecker(trimValue,1,3,message)
 
     if(formatResult.formatOk){
-        var interpretedCountry = countryUtils.countryCodeValues(num)
+        var interpretedCountry = countryUtils.countryCodeValues(trimValue)
         if(interpretedCountry){
 			return new api.ApiResponse(interpretedCountry, {'Content-Type': 'application/json'}, 200);
         }
 		else{
-			return new api.ApiResponse(utils.formatError("Country code not found",num), 
+			return new api.ApiResponse(utils.formatError("Country code not found",trimValue), 
 		{'Content-Type': 'application/json'}, 400);
 		}          
     }
 	else{
-		return new api.ApiResponse(utils.formatError(formatResult.errorMessage,num), 
+		return new api.ApiResponse(utils.formatError(formatResult.errorMessage,trimValue), 
 		{'Content-Type': 'application/json'}, 400);
 	}
 };
@@ -317,10 +326,11 @@ api.get('/' + API_VERSION + '/csu', function (request) {
 
 function processCSU(csu){
 	var message = "B1B2B3B4"
-    var formatResult = utils.formatChecker(csu,1,4,4,message)
+	var trimValue = utils.removeSpaces(csu)
+    var formatResult = utils.formatChecker(trimValue,1,4,4,message)
 
     if(formatResult.formatOk){
-        var interpretedCSU = csuUtils.decodeCSU(csu)
+        var interpretedCSU = csuUtils.decodeCSU(trimValue)
         if(interpretedCSU){
 			return new api.ApiResponse(interpretedCSU, {'Content-Type': 'application/json'}, 200);
         }
@@ -346,10 +356,11 @@ api.get('/' + API_VERSION + '/ctq', function (request) {
 
 function processCTQ(ctq){
 	var message = "B1B2"
-    var formatResult = utils.formatChecker(ctq,1,2,2,message)
+	var trimValue = utils.removeSpaces(ctq)
+    var formatResult = utils.formatChecker(trimValue,1,2,2,message)
 
     if(formatResult.formatOk){
-        var interpretedCTQ = ctqUtils.decodeCTQ(ctq)
+        var interpretedCTQ = ctqUtils.decodeCTQ(trimValue)
         if(interpretedCTQ){
 			return new api.ApiResponse(interpretedCTQ, {'Content-Type': 'application/json'}, 200);
         }
@@ -374,20 +385,21 @@ api.get('/' + API_VERSION + '/currency', function (request) {
 
 function processCurrency(num){
 	var message = "num value in decimal"
-    var formatResult = utils.decimalFormatChecker(num,1,3,message)
+	var trimValue = utils.removeSpaces(num)
+    var formatResult = utils.decimalFormatChecker(trimValue,1,3,message)
 
     if(formatResult.formatOk){
-        var interpretedCurrency = currencyUtils.currencyCodeValues(num)
+        var interpretedCurrency = currencyUtils.currencyCodeValues(trimValue)
         if(interpretedCurrency){
 			return new api.ApiResponse(interpretedCurrency, {'Content-Type': 'application/json'}, 200);
         }
 		else{
-			return new api.ApiResponse(utils.formatError("Currency code not found",num), 
+			return new api.ApiResponse(utils.formatError("Currency code not found",trimValue), 
 		{'Content-Type': 'application/json'}, 400);
 		}          
     }
 	else{
-		return new api.ApiResponse(utils.formatError(formatResult.errorMessage,num), 
+		return new api.ApiResponse(utils.formatError(formatResult.errorMessage,trimValue), 
 		{'Content-Type': 'application/json'}, 400);
 	}
 };
@@ -404,10 +416,11 @@ api.get('/' + API_VERSION + '/cvm', function (request) {
 
 function processCVM(cvm){
 	var message = "B1B2B3"
-    var formatResult = utils.formatChecker(cvm,1,3,3,message)
+	var trimValue = utils.removeSpaces(cvm)
+    var formatResult = utils.formatChecker(trimValue,1,3,3,message)
 
     if(formatResult.formatOk){
-        var interpretedCVM = cvmUtils.decodeCVMResults(cvm)
+        var interpretedCVM = cvmUtils.decodeCVMResults(trimValue)
         if(interpretedCVM){
 			return new api.ApiResponse(interpretedCVM, {'Content-Type': 'application/json'}, 200);
         }
@@ -432,10 +445,11 @@ api.get('/' + API_VERSION + '/cvr', function (request) {
 
 function processCVR(cvr){
 	var message = "B1B2B3B4 or B1B2B3B4B5"
-    var formatResult = utils.formatChecker(cvr,1,4,5,message)
+	var trimValue = utils.removeSpaces(cvr)
+    var formatResult = utils.formatChecker(trimValue,1,4,5,message)
 
     if(formatResult.formatOk){
-        var interpretedCVR = cvrUtils.decodeCVR(cvr)
+        var interpretedCVR = cvrUtils.decodeCVR(trimValue)
         if(interpretedCVR){
 			return new api.ApiResponse(interpretedCVR, {'Content-Type': 'application/json'}, 200);
         }
@@ -460,10 +474,11 @@ api.get('/' + API_VERSION + '/dol', function (request) {
 
 function processDOL(dol){
 	var message = "dol value in hexadecimal"
-    var formatResult = utils.formatChecker(dol,1,0,0,message)
+	var trimDol = utils.removeSpaces(dol)
+    var formatResult = utils.formatChecker(trimDol,1,0,0,message)
 
     if(formatResult.formatOk){
-        var interpretedDOL = dolUtils.decodeDOL(dol)
+        var interpretedDOL = dolUtils.decodeDOL(trimDol)
         if(interpretedDOL){
 			return new api.ApiResponse(interpretedDOL, {'Content-Type': 'application/json'}, 200);
         }
@@ -491,13 +506,14 @@ function processIIN(iin,exact) {
 
 	var message = "iin value between 3 and 8 digits"
 	//check size between 3 and 8
-    var formatResult = utils.formatChecker(iin,0,1.5,4,message)
+	var trimValue = utils.removeSpaces(iin)
+    var formatResult = utils.formatChecker(trimValue,0,1.5,4,message)
 
 	if(formatResult.formatOk){
 			if(!utils.isDec(iin)){
 				throw("The value provided is not decimal")
 			}
-			var interpretedIIN = iinUtils.iinValues(iin,exact)
+			var interpretedIIN = iinUtils.iinValues(trimValue,exact)
 			if(interpretedIIN){
 				return new api.ApiResponse(interpretedIIN, {'Content-Type': 'application/json'}, 200);
 			}
@@ -586,7 +602,7 @@ function checkLuhn(numValue,checkDigit) {
 function computeLuhn(numValue) {
 
 	var message = "Numeric value should be at least 1 digit"
-    var formatResult = utils.formatChecker(numValue,0,0.5,100,message)
+    var formatResult = utils.decimalFormatChecker(numValue,1,null,message)
 
 	if(formatResult.formatOk){
 			if(!utils.isDec(numValue)){
@@ -618,10 +634,11 @@ api.get('/' + API_VERSION + '/tag', function (request) {
 
 function processTag(tag,exact){
 	var message = "tag value in hexadecimal"
-    var formatResult = utils.formatChecker(tag,1,0,0,message)
+	var trimValue = utils.removeSpaces(tag)
+    var formatResult = utils.formatChecker(trimValue,1,0,0,message)
 
     if(formatResult.formatOk){
-        var interpretedTag = emvTagUtils.tagValues(tag,exact)
+        var interpretedTag = emvTagUtils.tagValues(trimValue,exact)
         if(interpretedTag){
 			return new api.ApiResponse(interpretedTag, {'Content-Type': 'application/json'}, 200);
         }
@@ -632,6 +649,41 @@ function processTag(tag,exact){
 	else{
 		throw(formatResult.errorMessage)
 	}
+};
+
+api.get('/' + API_VERSION + '/tagname/{tagname_value}', function (request) {
+	'use strict';
+	return processTagName(request.pathParams.tagname_value,true)
+});
+
+api.get('/' + API_VERSION + '/tagname', function (request) {
+    var tagname = request.queryString.tagname
+	var exact = request.queryString.exact
+	return processTagName(tagname,exact)
+});
+
+function processTagName(tagname,exact){
+	var message = "incorrect input"
+    //var formatResult = utils.formatChecker(tagname,0,1.5,0,message)
+
+    //if(formatResult.formatOk){
+	if(tagname){
+        var interpretedTag = emvTagUtils.tagNames(tagname,exact)
+        if(interpretedTag){
+			return new api.ApiResponse(interpretedTag, {'Content-Type': 'application/json'}, 200);
+        }
+		else{
+			throw("Internal error")
+		}     
+	}
+	else{
+		return new api.ApiResponse(utils.formatError(message,tagname), 
+		{'Content-Type': 'application/json'}, 400);
+	}     
+    //}
+	//else{
+	//	throw(formatResult.errorMessage)
+	//}
 };
 
 api.get('/' + API_VERSION + '/termcap/{termcap_value}', function (request) {
@@ -646,10 +698,11 @@ api.get('/' + API_VERSION + '/termcap', function (request) {
 
 function processTermCap(termcap){
 	var message = "B1B2B3"
-    var formatResult = utils.formatChecker(termcap,1,3,3,message)
+	var trimValue = utils.removeSpaces(termcap)
+    var formatResult = utils.formatChecker(trimValue,1,3,3,message)
 
     if(formatResult.formatOk){
-        var interpretedTermCap = termCapUtils.decodeTermCap(termcap)
+        var interpretedTermCap = termCapUtils.decodeTermCap(trimValue)
         if(interpretedTermCap){
 			return new api.ApiResponse(interpretedTermCap, {'Content-Type': 'application/json'}, 200);
         }
@@ -674,10 +727,11 @@ api.get('/' + API_VERSION + '/termtype', function (request) {
 
 function processTermType(termType){
 	var message = "NN"
-    var formatResult = utils.formatChecker(termType,0,1,1,message)
+	var trimValue = utils.removeSpaces(termType)
+    var formatResult = utils.formatChecker(trimValue,0,1,1,message)
 
     if(formatResult.formatOk){
-        var interpretedTermType = termTypeUtils.decodeTermType(termType)
+        var interpretedTermType = termTypeUtils.decodeTermType(trimValue)
         if(interpretedTermType != ""){
 			return new api.ApiResponse(interpretedTermType, {'Content-Type': 'application/json'}, 200);
         }
@@ -702,10 +756,11 @@ api.get('/' + API_VERSION + '/tsi', function (request) {
 
 function processTSI(tsi){
 	var message = "B1 or B1B2"
-    var formatResult = utils.formatChecker(tsi,1,1,2,message)
+	var trimValue = utils.removeSpaces(tsi)
+    var formatResult = utils.formatChecker(trimValue,1,1,2,message)
 
     if(formatResult.formatOk){
-        var interpretedTSI = tsiUtils.decodeTSI(tsi)
+        var interpretedTSI = tsiUtils.decodeTSI(trimValue)
         if(interpretedTSI){
 			return new api.ApiResponse(interpretedTSI, {'Content-Type': 'application/json'}, 200);
         }      
@@ -732,10 +787,11 @@ api.get('/' + API_VERSION + '/ttq', function (request) {
 
 function processTTQ(ttq) {
 	var message = "B1B2B3 B1B2B3B4"
-    var formatResult = utils.formatChecker(ttq,1,3,4,message)
+	var trimValue = utils.removeSpaces(ttq)
+    var formatResult = utils.formatChecker(trimValue,1,3,4,message)
 
     if(formatResult.formatOk){
-        var interpretedTTQ = ttqUtils.decodeTTQ(ttq)
+        var interpretedTTQ = ttqUtils.decodeTTQ(trimValue)
         if(interpretedTTQ){
 			return new api.ApiResponse(interpretedTTQ, {'Content-Type': 'application/json'}, 200);
         }
@@ -760,10 +816,11 @@ api.get('/' + API_VERSION + '/tvr', function (request) {
 
 function processTVR(tvr){
 	var message = "B1B2B3B4B5"
-    var formatResult = utils.formatChecker(tvr,1,5,5,message)
+	var trimValue = utils.removeSpaces(tvr)
+    var formatResult = utils.formatChecker(trimValue,1,5,5,message)
 
     if(formatResult.formatOk){
-        var interpretedTVR = tvrUtils.decodeTVR(tvr)
+        var interpretedTVR = tvrUtils.decodeTVR(trimValue)
         if(interpretedTVR){
 			return new api.ApiResponse(interpretedTVR, {'Content-Type': 'application/json'}, 200);
         }

@@ -1,17 +1,5 @@
 
-//Takes an aid value in parameter
-//Returns a list of matches (partial and exact) in a JSON structure
-exports.tagValues = function(tag, exact){
-
-    //console.log('Getting value: ' + tag)
-
-    var regex = new RegExp(tag,"gi");
-    if(exact){
-        regex = new RegExp("^"+tag+"$","i");
-    }
-    let m;
-
-    var test = [
+ const tagTable = [
 {"tag" : "5F57","name" : "Account Type","description" : "Indicates the type of account selected on the terminal, coded as specified in Annex G","source" : "Terminal","format" : "n2","template" : "—","length" : "1"},
 {"tag" : "9F01","name" : "Acquirer Identifier","description" : "Uniquely identifies the acquirer within each payment system","source" : "Terminal","format" : "n 6-11","template" : "—","length" : "6"},
 {"tag" : "9F40","name" : "Additional Terminal Capabilities","description" : "Indicates the data input and output capabilities of the terminal","source" : "Terminal","format" : "b","template" : "—","length" : "5"},
@@ -154,35 +142,93 @@ exports.tagValues = function(tag, exact){
 {"tag" : "9C","name" : "Transaction Type","description" : "Indicates the type of financial transaction, represented by the first two digits of the ISO 8583:1987 Processing Code. The actual values to be used for the Transaction Type data element are defined by the relevant payment system","source" : "Terminal","format" : "n2","template" : "—","length" : "1"},
 {"tag" : "9F37","name" : "Unpredictable Number","description" : "Value to provide variability and uniqueness to the generation of a cryptogram","source" : "Terminal","format" : "b","template" : "—","length" : "4"},
 {"tag" : "9F23","name" : "Upper Consecutive Offline Limit","description" : "Issuer-specified preference for the maximum number of consecutive offline transactions for this ICC application allowed in a terminal without online capability","source" : "ICC","format" : "b","template" : "70' or '77","length" : "1"}
-    ]   
+    ];
+
+//Takes a tag value in parameter
+//Returns a list of matches (partial and exact) in a JSON structure
+exports.tagValues = function(tag, exact){
+
+    //console.log('Getting value: ' + tag)
+
+    var regex = new RegExp(tag,"gi");
+    if(exact){
+        regex = new RegExp("^"+tag+"$","i");
+    }
+    let m;
+     
     //new method using the table
     var results = []
     var resultIndex = 0
 
-    for (var i = 0; i < test.length; i++)
+    for (var i = 0; i < tagTable.length; i++)
     {
-        var toTest = test[i].tag
-        //console.log('Testing: ' + toTest);
-        /*if(exact){
-            if(toTest == tag){
-                console.log('Found exact match: ' + toTest);
-                results[resultIndex] = {}
-                results[resultIndex].tag = test[i].tag
-                results[resultIndex].name = test[i].name 
-                results[resultIndex].description = test[i].description 
-                return results
-            }
-        }
-        else */if(toTest.match(regex)){
-            //partial match found
-            //console.log('adding to result list: ' + test[i].description);
+        var toTest = tagTable[i].tag
+        if(toTest.match(regex)){
             results[resultIndex] = {}
-            results[resultIndex].tag = test[i].tag
-            results[resultIndex].name = test[i].name
-            results[resultIndex].description = test[i].description 
+            results[resultIndex].tag = tagTable[i].tag
+            results[resultIndex].name = tagTable[i].name
+            results[resultIndex].description = tagTable[i].description 
+            results[resultIndex].source = tagTable[i].source 
+            results[resultIndex].format = tagTable[i].format 
+            results[resultIndex].template = tagTable[i].template 
+            results[resultIndex].length = tagTable[i].length
             resultIndex++
         }
     }
 
-    return results
+    return results.sort(tagComparator)
+}
+
+//Takes a tag name or description in parameter
+//Returns a list of matches (partial and exact) in a JSON structure
+exports.tagNames = function(tagname, exact){
+
+    //console.log('Getting value: ' + tag)
+
+    var regex = new RegExp(tagname,"gi");
+    if(exact){
+        regex = new RegExp("^"+tagname+"$","i");
+    }
+    let m;
+     
+    //new method using the table
+    var results = []
+    var resultIndex = 0
+
+    for (var i = 0; i < tagTable.length; i++)
+    {
+        var nameToTest = tagTable[i].name
+        var descriptionToTest = tagTable[i].description
+        if((nameToTest.match(regex)) || (descriptionToTest.match(regex))){
+            results[resultIndex] = {}
+            results[resultIndex].tag = tagTable[i].tag
+            results[resultIndex].name = tagTable[i].name
+            results[resultIndex].description = tagTable[i].description 
+            results[resultIndex].source = tagTable[i].source 
+            results[resultIndex].format = tagTable[i].format 
+            results[resultIndex].template = tagTable[i].template 
+            results[resultIndex].length = tagTable[i].length
+            resultIndex++
+        }
+    }
+
+    results.sort(function(a, b) {
+        return parseFloat(a.tag) - parseFloat(b.tag);
+    });
+
+    return results.sort(tagComparator)
+}
+
+function tagComparator(a, b) {
+  var nameA = a.tag.toUpperCase(); // ignore upper and lowercase
+  var nameB = b.tag.toUpperCase(); // ignore upper and lowercase
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+
+  // names must be equal
+  return 0;
 }

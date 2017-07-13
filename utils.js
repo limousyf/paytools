@@ -110,7 +110,7 @@ function splitChars(value, num) {
 }
 
 exports.decimalFormatChecker = function(value, minSize, maxSize, genericMessage){
-        var format = true
+    var format = true
 	var message
 	
 	if(value){
@@ -169,7 +169,7 @@ exports.formatChecker = function(value, isHex, minSize, maxSize, genericMessage)
     var format = true
 	var message
 	
-	var valueProcessed = removeSpaces(value)
+	var valueProcessed = value
 	
 	if(valueProcessed){
         if(isHex){
@@ -182,7 +182,7 @@ exports.formatChecker = function(value, isHex, minSize, maxSize, genericMessage)
         
         //testing for size
         if(minSize && maxSize && format){
-            if(!module.exports.checkBytesNumber(value,minSize,maxSize)){
+            if(!module.exports.checkBytesNumber(valueProcessed,minSize,maxSize)){
                 message = "Not really the correct size ... Enter " + genericMessage
 				format = false
             }
@@ -217,10 +217,13 @@ exports.createBitValue = function(bit,value){
     return errorObj;
 }
 
-function removeSpaces(input){
-  var str = input
-  str = str.replace(/\s+/g, '');	 
-  return str
+exports.removeSpaces = function(input){
+  if(input){
+    return input.replace(/\s+/g, '');
+  }
+  else{
+      return input
+  } 
 }
  
 //Binary Operations
